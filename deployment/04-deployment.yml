@@ -33,6 +33,7 @@ spec:
             capabilities:
               add:
                 - MKNOD
+                - NET_ADMIN
           ports:
             - containerPort: 1194
           volumeMounts:

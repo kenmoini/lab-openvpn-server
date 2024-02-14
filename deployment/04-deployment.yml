@@ -20,10 +20,10 @@ spec:
       labels:
         app: openvpn-server
     spec:
-      securityContext:
-        sysctls:
-          - name: net.ipv4.ip_forward
-            value: "1"
+      #securityContext:
+      #  sysctls:
+      #    - name: net.ipv4.ip_forward
+      #      value: "1"
       #    - name: net.ipv6.conf.default.forwarding
       #      value: "1"
       #    - name: net.ipv6.conf.all.forwarding

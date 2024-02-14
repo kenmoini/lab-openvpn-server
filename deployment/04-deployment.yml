@@ -29,6 +29,10 @@ spec:
               cpu: 100m
               memory: 128Mi
           image: docker.io/kylemanna/openvpn:latest
+          securityContext:
+            capabilities:
+              add:
+                - MKNOD
           ports:
             - containerPort: 1194
           volumeMounts:

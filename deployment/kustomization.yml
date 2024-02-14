@@ -1,0 +1,11 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: openvpn-server
+
+resources:
+  - 00-namespace.yml
+  - 02-configmap.yml
+  - 03-external-secrets.yml
+  - 04-deployment.yml
+  - 07-service.yml

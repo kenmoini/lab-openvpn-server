@@ -1,0 +1,70 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: openvpn-server-config
+  annotations:
+    argocd.argoproj.io/sync-wave: "2"
+  labels:
+    app: openvpn-server
+data:
+  openvpn.conf: |
+    server 192.168.69.0 255.255.255.0
+    verb 3
+    key /etc/openvpn/secrets/LAB.VPN.KEMO.NETWORK.key
+    ca /etc/openvpn/secrets/ca.crt
+    cert /etc/openvpn/secrets/LAB.VPN.KEMO.NETWORK.crt
+    dh /etc/openvpn/secrets/dh.pem
+    tls-auth /etc/openvpn/secrets/ta.key
+    key-direction 0
+    keepalive 10 60
+    persist-key
+    persist-tun
+
+    proto udp
+    port 1194
+    dev tun0
+    status /tmp/openvpn-status.log
+
+    user nobody
+    group nogroup
+    cipher AES-256-CBC
+    auth SHA384
+    client-to-client
+    comp-lzo no
+
+    ### Push Configurations Below
+    push "dhcp-option DNS 192.168.42.9"
+    push "dhcp-option DNS 192.168.42.10"
+    push "comp-lzo no"
+    push "route 192.168.42.0 255.255.255.0"
+    push "route 192.168.46.0 255.255.255.0"
+    push "route 192.168.60.0 255.255.254.0"
+    push "route 192.168.70.0 255.255.254.0"
+    push "dhcp-option DOMAIN kemo.labs"
+    push "redirect-gateway def1"
+  ovpn_env.sh: |
+    declare -x OVPN_AUTH=SHA384
+    declare -x OVPN_CIPHER=AES-256-CBC
+    declare -x OVPN_CLIENT_TO_CLIENT=1
+    declare -x OVPN_CN=LAB.VPN.KEMO.NETWORK
+    declare -x OVPN_COMP_LZO=0
+    declare -x OVPN_DEFROUTE=1
+    declare -x OVPN_DEVICE=tun
+    declare -x OVPN_DEVICEN=0
+    declare -x OVPN_DISABLE_PUSH_BLOCK_DNS=1
+    declare -x OVPN_DNS=1
+    declare -x OVPN_DNS_SERVERS=([0]="192.168.42.9" [1]="192.168.42.10")
+    declare -x OVPN_ENV=/etc/openvpn/ovpn_env.sh
+    declare -x OVPN_EXTRA_CLIENT_CONFIG=()
+    declare -x OVPN_EXTRA_SERVER_CONFIG=()
+    declare -x OVPN_FRAGMENT=
+    declare -x OVPN_KEEPALIVE='10 60'
+    declare -x OVPN_MTU=
+    declare -x OVPN_NAT=1
+    declare -x OVPN_PORT=1194
+    declare -x OVPN_PROTO=udp
+    declare -x OVPN_PUSH=()
+    declare -x OVPN_ROUTES=()
+    declare -x OVPN_SERVER=192.168.69.0/24
+    declare -x OVPN_SERVER_URL=udp://LAB.VPN.KEMO.NETWORK
+    declare -x OVPN_TLS_CIPHER=

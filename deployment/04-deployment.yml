@@ -1,0 +1,45 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: openvpn-server
+  annotations:
+    argocd.argoproj.io/sync-wave: "4"
+  labels:
+    app: openvpn-server
+spec:
+  selector:
+    matchLabels:
+      app: openvpn-server
+  strategy:
+    type: Recreate
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: openvpn-server
+    spec:
+      containers:
+        - name: openvpn-server
+          resources:
+            limits:
+              cpu: 250m
+              memory: 256Mi
+            requests:
+              cpu: 100m
+              memory: 128Mi
+          image: docker.io/kylemanna/openvpn:latest
+          ports:
+            - containerPort: 1194
+          volumeMounts:
+            - name: server-config
+              mountPath: /etc/openvpn
+            - name: squid-certs
+              mountPath: /etc/squid/private
+      volumes:
+        - name: server-config
+          configMap:
+            name: openvpn-server-config
+        - name: squid-certs
+          secret:
+            secretName: squid-certs

@@ -34,12 +34,12 @@ spec:
           volumeMounts:
             - name: server-config
               mountPath: /etc/openvpn
-            - name: squid-certs
-              mountPath: /etc/squid/private
+            - name: openvpn-server-certs
+              mountPath: /etc/openvpn/secrets
       volumes:
         - name: server-config
           configMap:
             name: openvpn-server-config
-        - name: squid-certs
+        - name: openvpn-server-certs
           secret:
-            secretName: squid-certs
+            secretName: openvpn-server-certs

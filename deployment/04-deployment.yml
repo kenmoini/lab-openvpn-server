@@ -28,6 +28,7 @@ spec:
       #      value: "1"
       #    - name: net.ipv6.conf.all.forwarding
       #      value: "1"
+      hostNetwork: true
       containers:
         - name: openvpn-server
           resources:

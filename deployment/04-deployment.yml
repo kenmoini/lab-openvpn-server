@@ -14,6 +14,7 @@ spec:
   strategy:
     type: Recreate
   replicas: 1
+  revisionHistoryLimit: 3
   template:
     metadata:
       labels:
@@ -33,7 +34,7 @@ spec:
             privileged: true
             capabilities:
               add:
-                - MKNOD
+                #- MKNOD
                 - NET_ADMIN
           ports:
             - containerPort: 1194

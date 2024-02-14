@@ -30,6 +30,7 @@ spec:
               memory: 128Mi
           image: docker.io/kylemanna/openvpn:latest
           securityContext:
+            privileged: true
             capabilities:
               add:
                 - MKNOD
